@@ -1,6 +1,17 @@
+# Virtual environment
 venv/
+
+# Django files
 __pycache__/
-*.pyc
-db.sqlite3
+*.py[cod]
+*.sqlite3
 *.log
+
+# OS junk
+.DS_Store
+
+# Env variables
 .env
+
+# VSCode
+.vscode/
