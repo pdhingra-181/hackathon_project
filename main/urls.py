@@ -8,4 +8,6 @@ urlpatterns = [
     path('profile/<int:id>/', views.profile_detail, name='profile_detail'),
     path('request/', views.request_form, name='request_form'),
     path('swaps/', views.swap_requests, name='swap_requests'),
+    path('request/<int:profile_id>/', views.request_form, name='request_form'),
 ]
+

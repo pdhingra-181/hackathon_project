@@ -5,29 +5,25 @@
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 py-12">
-
   <h1 class="text-4xl font-bold text-center text-gray-800 mb-10">Swap Skills with Others</h1>
 
   <!-- Search Bar & Filters -->
   <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-10">
     <form method="GET" class="flex w-full max-w-xl gap-2">
       <input type="text" name="search" placeholder="Search skills"
-             value="{{ request.GET.search }}"
+             value="{{ search_query }}"
              class="flex-1 px-4 py-2 rounded-lg border shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
+      <select name="availability"
+              class="px-4 py-2 rounded-lg border shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
+        <option value="">Availability</option>
+        <option value="Weekends" {% if availability_filter == "Weekends" %}selected{% endif %}>Weekends</option>
+        <option value="Evenings" {% if availability_filter == "Evenings" %}selected{% endif %}>Evenings</option>
+        <option value="Mornings" {% if availability_filter == "Mornings" %}selected{% endif %}>Mornings</option>
+      </select>
       <button type="submit"
               class="bg-teal-600 text-white px-5 py-2 rounded-lg shadow hover:bg-teal-700 transition">
         Search
       </button>
-    </form>
-
-    <form method="GET">
-      <select name="availability"
-              class="px-4 py-2 rounded-lg border shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
-        <option value="">Availability</option>
-        <option value="Weekends" {% if request.GET.availability == "Weekends" %}selected{% endif %}>Weekends</option>
-        <option value="Evenings" {% if request.GET.availability == "Evenings" %}selected{% endif %}>Evenings</option>
-        <option value="Mornings" {% if request.GET.availability == "Mornings" %}selected{% endif %}>Mornings</option>
-      </select>
     </form>
   </div>
 
@@ -40,17 +36,22 @@
       <h2 class="text-xl font-semibold text-gray-800 mb-1">{{ user.name }}</h2>
       <p class="text-sm text-gray-500 mb-2">{{ user.availability }}</p>
 
+      {% if user.skills_offered %}
       <div class="flex flex-wrap justify-center gap-2 mb-2">
         {% for skill in user.skills_offered %}
-        <span class="text-xs px-3 py-1 bg-teal-100 text-teal-800 rounded-full">Skills offered</span>
+        <span class="text-xs px-3 py-1 bg-teal-100 text-teal-800 rounded-full">{{ skill }}</span>
         {% endfor %}
       </div>
+      {% endif %}
 
+      {% if user.skills_wanted %}
       <div class="flex flex-wrap justify-center gap-2 mb-4">
         {% for skill in user.skills_wanted %}
-        <span class="text-xs px-3 py-1 bg-cyan-100 text-cyan-800 rounded-full">Skills wanted</span>
+        <span class="text-xs px-3 py-1 bg-cyan-100 text-cyan-800 rounded-full">{{ skill }}</span>
         {% endfor %}
       </div>
+      {% endif %}
+
       <button class="bg-teal-600 text-white text-sm px-4 py-1.5 rounded-md hover:bg-teal-700 transition">
         Request
       </button>
@@ -65,7 +66,7 @@
   <div class="flex justify-center mt-10">
     <nav class="inline-flex items-center bg-white shadow-sm rounded-lg">
       {% if users.has_previous %}
-      <a href="?page={{ users.previous_page_number }}&search={{ request.GET.search }}&availability={{ request.GET.availability }}"
+      <a href="?page={{ users.previous_page_number }}&search={{ search_query }}&availability={{ availability_filter }}"
          class="px-4 py-2 text-sm border-r rounded-l-lg hover:bg-gray-100">←</a>
       {% else %}
       <span class="px-4 py-2 text-sm text-gray-400 border-r rounded-l-lg">←</span>
@@ -74,7 +75,7 @@
       <span class="px-4 py-2 text-sm">{{ users.number }}</span>
 
       {% if users.has_next %}
-      <a href="?page={{ users.next_page_number }}&search={{ request.GET.search }}&availability={{ request.GET.availability }}"
+      <a href="?page={{ users.next_page_number }}&search={{ search_query }}&availability={{ availability_filter }}"
          class="px-4 py-2 text-sm border-l rounded-r-lg hover:bg-gray-100">→</a>
       {% else %}
       <span class="px-4 py-2 text-sm text-gray-400 border-l rounded-r-lg">→</span>
