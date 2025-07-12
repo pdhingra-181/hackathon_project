@@ -7,7 +7,7 @@
 
   <!-- Illustration (optional) -->
   <div class="hidden md:block w-full md:w-1/2">
-    <img src="{% static 'main/images/login-illustration.png' %}" alt="Login" class="w-full max-w-md mx-auto">
+    <img src="{% static 'main/images/login.jpeg' %}" alt="Login" class="w-full max-w-md mx-auto">
   </div>
 
   <!-- Login Form -->
@@ -48,7 +48,7 @@
 
     <p class="mt-6 text-center text-sm text-gray-600">
       Don’t have an account?
-      <a href="#" class="text-blue-500 hover:underline">Sign up</a>
+      <a href="{% url 'signup' %}" class="text-blue-500 hover:underline">Sign up</a>
     </p>
   </div>
 </div>

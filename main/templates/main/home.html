@@ -35,22 +35,23 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
     {% for user in users %}
     <div class="bg-white p-6 rounded-2xl shadow-md text-center">
-      <img src="{% static 'main/login-illustration.jpeg' %}" alt="Avatar"
+      <img src="{% static 'main/images/avatar_placeholder.png' %}" alt="Login"
            class="w-20 h-20 mx-auto rounded-full border-4 border-teal-500 mb-4">
       <h2 class="text-xl font-semibold text-gray-800 mb-1">{{ user.name }}</h2>
       <p class="text-sm text-gray-500 mb-2">{{ user.availability }}</p>
 
       <div class="flex flex-wrap justify-center gap-2 mb-2">
         {% for skill in user.skills_offered %}
-        <span class="text-xs px-3 py-1 bg-teal-100 text-teal-800 rounded-full">Skills offered</span>
+        <span class="text-xs px-3 py-1 bg-teal-100 text-teal-800 rounded-full">{{ skill }}</span>
         {% endfor %}
       </div>
 
       <div class="flex flex-wrap justify-center gap-2 mb-4">
         {% for skill in user.skills_wanted %}
-        <span class="text-xs px-3 py-1 bg-cyan-100 text-cyan-800 rounded-full">Skills wanted</span>
+        <span class="text-xs px-3 py-1 bg-cyan-100 text-cyan-800 rounded-full">{{ skill }}</span>
         {% endfor %}
       </div>
+
       <button class="bg-teal-600 text-white text-sm px-4 py-1.5 rounded-md hover:bg-teal-700 transition">
         Request
       </button>

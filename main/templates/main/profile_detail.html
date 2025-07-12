@@ -1,15 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
 
-{% block title %}User Profile{% endblock %}
+{% block title %}My Profile{% endblock %}
 
 {% block content %}
 <div class="max-w-3xl mx-auto mt-10 bg-white p-6 rounded-2xl shadow-md">
   <div class="flex items-center gap-6">
-    <img src="{% static user_data.photo %}" alt="Profile" class="w-24 h-24 rounded-full border">
+    <img src="{% static 'main/images/avatar.jpeg' %}" alt="Profile" class="w-24 h-24 rounded-full border">
     <div>
-      <h2 class="text-2xl font-semibold text-gray-800">{{ user_data.name }}</h2>
-      <p class="text-gray-500">Location: {{ user_data.location }}</p>
+      <h2 class="text-2xl font-semibold text-gray-800">{{ user_data.username }}</h2>
+      <p class="text-gray-500">Email: {{ user_data.email }}</p>
     </div>
   </div>
 
@@ -17,26 +17,26 @@
     <div>
       <h3 class="text-lg font-medium mb-2 text-gray-700">Skills Offered</h3>
       <ul class="list-disc ml-5 text-gray-600">
-        {% for skill in user_data.skills_offered %}
-          <li>{{ skill }}</li>
-        {% endfor %}
+        <li>Coming Soon</li>
       </ul>
     </div>
     <div>
       <h3 class="text-lg font-medium mb-2 text-gray-700">Skills Wanted</h3>
       <ul class="list-disc ml-5 text-gray-600">
-        {% for skill in user_data.skills_wanted %}
-          <li>{{ skill }}</li>
-        {% endfor %}
+        <li>Coming Soon</li>
       </ul>
     </div>
   </div>
 
-  <p class="mt-4 text-gray-700">Availability: {{ user_data.availability }}</p>
+  <p class="mt-4 text-gray-700">Availability: Not yet updated</p>
 
-  <div class="mt-6">
+  <div class="mt-6 flex justify-between items-center">
     <a href="{% url 'request_form' %}" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition duration-200">
       Request Swap
+    </a>
+
+    <a href="{% url 'logout' %}" class="inline-block bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg transition duration-200">
+      Logout
     </a>
   </div>
 </div>
