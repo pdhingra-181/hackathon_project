@@ -1,45 +1,62 @@
-{% extends 'base.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
 
-{% block title %}Send Swap Request{% endblock %}
+{% block title %}Send General Request{% endblock %}
 
 {% block content %}
-<div class="max-w-xl mx-auto mt-10 bg-white p-6 rounded-2xl shadow-md">
-  <h2 class="text-2xl font-semibold mb-6 text-gray-800">Request a Skill Swap with {{ receiver.name }}</h2>
+<div class="max-w-2xl mx-auto px-6 py-10 bg-white shadow-xl rounded-xl mt-10">
+  <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Create a General Skill Swap Request</h2>
 
   {% if success %}
-    <p class="mb-4 text-green-600 font-medium">Your request has been sent successfully!</p>
+  <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4 text-center">
+    ✅ Request sent successfully!
+  </div>
   {% endif %}
 
-  <form method="POST">
+  <form method="POST" class="space-y-6">
     {% csrf_token %}
-    <div class="mb-4">
-      <label class="block text-gray-700 mb-1">Choose one of your offered skills</label>
-      <select name="skill_offered" required class="w-full px-4 py-2 border rounded-lg">
+
+    <!-- Skill Offered -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Skill You’re Offering</label>
+      <div class="flex flex-wrap gap-2">
         {% for skill in offered_skills %}
-        <option value="{{ skill }}">{{ skill }}</option>
+        <label class="bg-gray-100 text-sm px-3 py-1 rounded-full cursor-pointer hover:bg-teal-100">
+          <input type="radio" name="skill_offered" value="{{ skill }}" class="hidden peer">
+          <span class="peer-checked:text-teal-700 peer-checked:font-semibold">{{ skill }}</span>
+        </label>
         {% endfor %}
-      </select>
+      </div>
     </div>
 
-    <div class="mb-4">
-      <label class="block text-gray-700 mb-1">Choose one of their wanted skills</label>
-      <select name="skill_requested" required class="w-full px-4 py-2 border rounded-lg">
+    <!-- Skill Wanted -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Skill You Want</label>
+      <div class="flex flex-wrap gap-2">
         {% for skill in requested_skills %}
-        <option value="{{ skill }}">{{ skill }}</option>
+        <label class="bg-gray-100 text-sm px-3 py-1 rounded-full cursor-pointer hover:bg-cyan-100">
+          <input type="radio" name="skill_requested" value="{{ skill }}" class="hidden peer">
+          <span class="peer-checked:text-cyan-700 peer-checked:font-semibold">{{ skill }}</span>
+        </label>
         {% endfor %}
-      </select>
+      </div>
     </div>
 
-    <div class="mb-4">
-      <label class="block text-gray-700 mb-1">Message (optional)</label>
-      <textarea name="message" rows="4" class="w-full px-4 py-2 border rounded-lg"
-                placeholder="Write something..."></textarea>
+    <!-- Message -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Message (optional)</label>
+      <textarea name="message" rows="3"
+                class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
+                placeholder="Briefly explain your motivation or what you’re looking for..."></textarea>
     </div>
 
-    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition duration-200">
-      Submit
-    </button>
+    <!-- Submit Button -->
+    <div class="text-center">
+      <button type="submit"
+              class="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2 rounded-md text-sm shadow transition">
+        🚀 Send Request
+      </button>
+    </div>
   </form>
 </div>
 {% endblock %}

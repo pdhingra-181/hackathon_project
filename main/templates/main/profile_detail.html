@@ -31,9 +31,10 @@
   <p class="mt-4 text-gray-700">Availability: Not yet updated</p>
 
   <div class="mt-6 flex justify-between items-center">
-    <a href="{% url 'request_form' %}" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition duration-200">
-      Request Swap
-    </a>
+    <a href="{% url 'request_form' profile.id %}" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition duration-200">
+  Request Swap
+</a>
+
 
     <a href="{% url 'logout' %}" class="inline-block bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg transition duration-200">
       Logout

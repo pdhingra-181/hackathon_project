@@ -7,7 +7,7 @@
 <div class="max-w-7xl mx-auto px-4 py-12">
   <h1 class="text-4xl font-bold text-center text-gray-800 mb-10">Swap Skills with Others</h1>
 
-  <!-- Search Bar & Filters -->
+  <!-- Search and Filter -->
   <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-10">
     <form method="GET" class="flex w-full max-w-xl gap-2">
       <input type="text" name="search" placeholder="Search skills"
@@ -31,7 +31,7 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
     {% for user in users %}
     <div class="bg-white p-6 rounded-2xl shadow-md text-center">
-      <img src="{% static 'main/images/avatar_placeholder.png' %}" alt="Login"
+      <img src="{% static 'main/images/avatar_placeholder.png' %}" alt="Profile"
            class="w-20 h-20 mx-auto rounded-full border-4 border-teal-500 mb-4">
       <h2 class="text-xl font-semibold text-gray-800 mb-1">{{ user.name }}</h2>
       <p class="text-sm text-gray-500 mb-2">{{ user.availability }}</p>
@@ -52,14 +52,54 @@
       </div>
       {% endif %}
 
-      <button class="bg-teal-600 text-white text-sm px-4 py-1.5 rounded-md hover:bg-teal-700 transition">
-        Request
-      </button>
+      <a href="{% url 'request_form' user.id %}"
+         class="bg-teal-600 text-white text-sm px-4 py-1.5 rounded-md hover:bg-teal-700 transition">
+        Send Request
+      </a>
     </div>
     {% empty %}
     <div class="col-span-full text-center text-gray-500 text-lg">No users found.</div>
     {% endfor %}
   </div>
+
+  <!-- Recent General Requests -->
+  <section class="mt-16">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Recent General Requests</h2>
+
+    {% if recent_swaps %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for swap in recent_swaps %}
+      <div class="bg-white rounded-xl shadow p-5 border border-gray-100 hover:shadow-lg transition">
+        <div class="text-sm text-gray-700">
+          <span class="font-semibold text-gray-800">{{ swap.sender.username }}</span>
+          wants to exchange
+          <span class="text-teal-700 font-medium">{{ swap.skill_offered }}</span>
+          for
+          <span class="text-cyan-700 font-medium">{{ swap.skill_requested }}</span>
+        </div>
+
+        {% if swap.message %}
+        <p class="text-xs italic text-gray-500 mt-2">"{{ swap.message }}"</p>
+        {% endif %}
+
+        <p class="text-xs text-gray-400 mt-1">{{ swap.created_at|date:"M d, Y - H:i" }}</p>
+
+        {% if request.user.is_authenticated and request.user != swap.sender and swap.status == 'Pending' and swap.receiver == None %}
+        <form method="POST" action="{% url 'handle_swap_action' swap.id %}" class="mt-4 flex gap-3">
+          {% csrf_token %}
+          <button name="action" value="accept"
+                  class="flex-1 bg-teal-600 text-white py-1 text-sm rounded hover:bg-teal-700">Accept</button>
+          <button name="action" value="reject"
+                  class="flex-1 bg-red-500 text-white py-1 text-sm rounded hover:bg-red-600">Reject</button>
+        </form>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-gray-500 text-sm">No general requests yet. Be the first to send one!</p>
+    {% endif %}
+  </section>
 
   <!-- Pagination -->
   {% if users.has_other_pages %}

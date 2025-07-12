@@ -1,28 +1,38 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}My Swap Requests{% endblock %}
+{% block title %}Swap Requests{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto mt-10">
-  <h2 class="text-2xl font-semibold mb-6 text-gray-800">My Swap Requests</h2>
+<div class="max-w-5xl mx-auto mt-10 bg-white p-6 rounded-2xl shadow-md">
+  <h2 class="text-3xl font-bold text-gray-800 mb-6">Swap Request History</h2>
 
-  <div class="grid gap-6">
-    {% for swap in swaps %}
-    <div class="bg-white p-5 rounded-xl shadow flex flex-col md:flex-row justify-between items-start md:items-center">
-      <div>
-        <p class="text-gray-700">
-          <strong>You offered:</strong> {{ swap.offer }}<br>
-          <strong>You requested:</strong> {{ swap.want }}
-        </p>
-        <p class="text-sm text-gray-500 mt-1">To: {{ swap.to }} | Date: {{ swap.date }}</p>
-      </div>
-      <div class="mt-4 md:mt-0">
-        <span class="inline-block bg-yellow-100 text-yellow-800 text-sm px-3 py-1 rounded-full">{{ swap.status }}</span>
-        <button class="ml-4 text-red-600 hover:underline text-sm">Delete</button>
-      </div>
+  {% for swap in swaps %}
+    <div class="border-b py-4">
+      <p class="text-gray-700">
+        <strong>{{ swap.sender.username }}</strong> offered <strong>{{ swap.skill_offered }}</strong>
+        to <strong>{{ swap.receiver.username }}</strong> in exchange for <strong>{{ swap.skill_requested }}</strong>
+      </p>
+      {% if swap.message %}
+        <p class="text-sm text-gray-500 mt-1">"{{ swap.message }}"</p>
+      {% endif %}
+      <p class="text-sm text-gray-400 mt-1">{{ swap.created_at }}</p>
+      <p class="mt-2">
+        {% if swap.status == 'Pending' and swap.receiver == user %}
+          <form method="POST" action="{% url 'handle_swap_action' swap.id %}" class="inline-block">
+            {% csrf_token %}
+            <button type="submit" name="action" value="accept" class="bg-green-500 text-white px-3 py-1 rounded mr-2">Accept</button>
+            <button type="submit" name="action" value="reject" class="bg-red-500 text-white px-3 py-1 rounded">Reject</button>
+          </form>
+        {% else %}
+          <span class="text-sm font-semibold {% if swap.status == 'Accepted' %}text-green-600{% elif swap.status == 'Rejected' %}text-red-600{% endif %}">
+            {{ swap.status }}
+          </span>
+        {% endif %}
+      </p>
     </div>
-    {% endfor %}
-  </div>
+  {% empty %}
+    <p class="text-gray-500">No swap requests yet.</p>
+  {% endfor %}
 </div>
 {% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto p-6">
+  <h1 class="text-2xl font-bold mb-6">General Swap Requests</h1>
+  {% for swap in swaps %}
+  <div class="bg-white p-4 shadow rounded mb-4">
+    <p class="text-sm">
+      <strong>{{ swap.sender.username }}</strong> offers
+      <span class="font-medium text-teal-700">{{ swap.skill_offered }}</span>
+      in exchange for
+      <span class="font-medium text-cyan-700">{{ swap.skill_requested }}</span>
+    </p>
+    {% if swap.message %}
+    <p class="text-xs text-gray-500 mt-1 italic">"{{ swap.message }}"</p>
+    {% endif %}
+    <form method="POST" action="{% url 'handle_swap_action' swap.id %}" class="mt-2">
+      {% csrf_token %}
+      <button name="action" value="accept" class="bg-green-500 text-white px-3 py-1 rounded">Accept</button>
+      <button name="action" value="reject" class="bg-red-500 text-white px-3 py-1 rounded ml-2">Reject</button>
+    </form>
+  </div>
+  {% empty %}
+  <p class="text-gray-500">No general requests available.</p>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -22,13 +22,15 @@
     <nav class="flex items-center gap-6">
       <a href="{% url 'home' %}" class="text-gray-700 hover:text-teal-600 transition">Home</a>
       <a href="{% url 'my_requests' %}" class="text-gray-700 hover:text-teal-600 transition">My Requests</a>
-      <a href="{% url 'profile_detail' %}">
-  <img src="{% static 'main/images/avatar_placeholder.png' %}" alt="Profile" class="w-8 h-8 rounded-full border-2 border-gray-300 hover:ring-2 hover:ring-teal-500 transition duration-150" />
-</a>
-
+      <a href="{% url 'swap_requests' %}" class="text-gray-700 hover:text-teal-600 transition">Swap History</a>
+      <a href="{% url 'general_swaps' %}" class="text-gray-700 hover:text-teal-600 transition">General Requests</a>
+      <a href="{% url 'profile' %}">
+        <img src="{% static 'main/images/avatar_placeholder.png' %}" alt="Profile" class="w-8 h-8 rounded-full border-2 border-gray-300 hover:ring-2 hover:ring-teal-500 transition duration-150" />
+      </a>
     </nav>
   </header>
 
+  <!-- Main Content -->
   {% block content %}{% endblock %}
 
 </body>
