@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Skill Swap{% endblock %}</title>
+
+  <!-- Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="{% static 'main/style.css' %}">
+
+  {% block head %}{% endblock %}
+</head>
+<body class="bg-[#e6f2fb] text-gray-800 min-h-screen font-sans antialiased">
+
+  <!-- Header -->
+  <header class="bg-white shadow-md py-4 px-6 flex justify-between items-center rounded-b-xl">
+    <div class="text-2xl font-bold text-gray-800">Skill Swap Platform</div>
+    <nav class="flex items-center gap-6">
+      <a href="{% url 'home' %}" class="text-gray-700 hover:text-teal-600 transition">Home</a>
+      <a href="{% url 'my_requests' %}" class="text-gray-700 hover:text-teal-600 transition">My Requests</a>
+      <img src="{% static 'main/images/avatar_placeholder.png' %}" alt="Profile" class="w-8 h-8 rounded-full border-2 border-gray-300" />
+    </nav>
+  </header>
+
+  {% block content %}{% endblock %}
+
+</body>
+</html>
