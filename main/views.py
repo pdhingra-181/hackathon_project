@@ -63,16 +63,34 @@ def login_view(request):
 
     return render(request, 'main/login.html')
 
-def profile_detail(request, id=None):
-    user_data = {
-        'name': 'John Doe',
-        'location': 'Delhi',
-        'photo': 'main/default-profile.png',
-        'skills_offered': ['Python Programming', 'Video Editing'],
-        'skills_wanted': ['UI/UX Design', 'Public Speaking'],
-        'availability': 'Weekends & Evenings',
-    }
-    return render(request, 'main/profile_detail.html', {'user_data': user_data})
+from django.contrib.auth.models import User
+
+def signup_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirm = request.POST.get('confirm')
+
+        if password != confirm:
+            messages.error(request, "Passwords do not match.")
+        elif User.objects.filter(username=username).exists():
+            messages.error(request, "Username already taken.")
+        else:
+            user = User.objects.create_user(username=username, email=email, password=password)
+            login(request, user)
+            return redirect('home')
+
+    return render(request, 'main/signup.html')
+
+
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def profile_detail(request):
+    return render(request, 'main/profile_detail.html', {
+        'user_data': request.user
+    })
 
 
 def swap_requests(request):
@@ -127,3 +145,9 @@ def request_form(request, profile_id):
         'offered_skills': sender_profile.skills_offered,
         'requested_skills': receiver_profile.skills_wanted
     })
+
+from django.contrib.auth import logout
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
